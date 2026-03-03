@@ -98,11 +98,10 @@ def build_playlists(songs: List[Song], profile: Dict[str, object]) -> PlaylistMa
 
 
 def merge_playlists(a: PlaylistMap, b: PlaylistMap) -> PlaylistMap:
-    """Merge two playlist maps into a new map."""
+    """Merge two playlist maps into a new map without mutating inputs."""
     merged: PlaylistMap = {}
     for key in set(list(a.keys()) + list(b.keys())):
-        merged[key] = a.get(key, [])
-        merged[key].extend(b.get(key, []))
+        merged[key] = list(a.get(key, [])) + list(b.get(key, []))
     return merged
 
 
@@ -195,6 +194,8 @@ def random_choice_or_none(songs: List[Song]) -> Optional[Song]:
     """Return a random song or None."""
     import random
 
+    if not songs:
+        return None
     return random.choice(songs)
 
 
